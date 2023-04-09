@@ -14,8 +14,8 @@ jobs:
         with:
           script: |
             const { data } = await github.git.listMatchingRefs({
-              owner: 'OWNER',
-              repo: 'REPO',
+              owner: Unwillingx,
+              repo: OpenWrt-N1-firmware,
               ref: 'tags/*',
             });
             core.setOutput('tags', data.map(({ ref }) => ref.replace(/^refs\/tags\//, '')));
