@@ -23,7 +23,7 @@ jobs:
         uses: actions/download-release@v1
         with:
           owner: Unwillingx
-          repo: OpenWrt-N1-firmware
+          repo: Unwillingx/OpenWrt-N1-firmware
           tag_name: ${{ steps.tags.outputs.tags }}
           asset_name: openwrt-armvirt-64-default-rootfs.tar.gz
           path: /opt
