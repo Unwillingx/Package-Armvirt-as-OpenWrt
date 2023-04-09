@@ -7,26 +7,17 @@ jobs:
   download:
     runs-on: ubuntu-20.04
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
-      - name: List tags
-        uses: actions/github-script@v5
+      - name: Get latest tag name
+        id: get_tag_name
+        run: echo ::set-output name=tag_name::$(git describe --tags --abbrev=0)
+        
+      - name: Download Latest Release Asset
+        uses: dawidd6/action-download-artifact@v2
         with:
-          script: |
-            const { data } = await github.git.listMatchingRefs({
-              owner: Unwillingx,
-              repo: OpenWrt-N1-firmware,
-              ref: 'tags/*',
-            });
-            core.setOutput('tags', data.map(({ ref }) => ref.replace(/^refs\/tags\//, '')));
-      - name: Download latest release asset
-        uses: actions/download-release@v1
-        with:
-          owner: Unwillingx
-          repo: Unwillingx/OpenWrt-N1-firmware
-          tag_name: ${{ steps.tags.outputs.tags }}
-          asset_name: openwrt-armvirt-64-default-rootfs.tar.gz
-          path: /opt
+          url: https://github.com/Unwillingx/OpenWrt-N1-firmware/releases/download/${{ steps.get_tag_name.outputs.tag_name }}/file.zip
+          path: /opt/openwrt-armvirt-64-default-rootfs.tar.gz
           
       - name: Package Armvirt as OpenWrt
         uses: unifreq/openwrt_packit@master
